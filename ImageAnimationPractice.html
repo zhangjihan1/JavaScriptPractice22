@@ -1,0 +1,80 @@
+<!-- 
+下代码属于Deep Knowledge Education，其用途仅为教学展示，任何人不可复制，使用，或用于任何其他用途，违者必追究法律责任。
+The code below belongs to Deep Knowledge Education. 
+It is only for demonstration as part of education process.
+You cannot copy, use the code, nor can you use it for any other purpose.
+Offenders must be held accountable.
+Date: 17 Sep 2020
+-->
+
+<!-- 
+    练习说明：在网页上显示一张图片，过段时间后缩小图片，在此之后随即从准备好的几张图片里挑
+    一张不一样的，把它在网页上发到缩小， 当用户点击图片之后，图片相应的网站要显示在网页上。
+    
+    练习知识点：
+            * 递归函数
+            * JavaScript Random
+            * jQuery DOM 操作
+            * jQUery Animation            
+ -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title> Get Images By Calling APIs</title>
+    <style>
+        img {
+            width: 500px;
+            height: 500px;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        window.onload = function () {
+            //（1）等待3秒后开始缩小图片
+            setTimeout(imageHandler, 3000);
+
+            // (2)定义处理图片动画的函数，使用animate函数缩小图片消失
+            function imageHandler() {
+                $("#myImage").animate({ width: "0px", height: "0px" }, 3000, repeatImgAnimate);
+            }
+
+            // (3) 定义循环使图片放到和缩小的函数
+            let prevImgIdx = 0;
+            function repeatImgAnimate() {
+                //(4) 随即生成和上次图片不一样的下标
+                let currImgIdx = Math.floor(Math.random() * 4);
+                while (prevImgIdx == currImgIdx) {
+                    currImgIdx = Math.floor(Math.random() * 4);
+                }
+
+                //(5)[1] 跟新图片信息
+                prevImgIdx = currImgIdx;
+                $("#myImage").attr("src", `u${currImgIdx}.png`);
+
+                //(5)[2] 给图片绑定链接
+                let linkArr = ["https://www.uts.edu.au/", "https://www.uow.edu.au/", "https://www.sydney.edu.au/", "https://www.unsw.edu.au/"];
+                $("#imgLink").attr("href", linkArr[currImgIdx]);
+
+
+                //(6）递归调用动画
+                $("#myImage").animate({ width: "500px", height: "500px" }, 1500);
+                $("#myImage").animate({ width: "0px", height: "0px" }, 1500, repeatImgAnimate);
+
+
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h1 id="title">jQuery 图片点击以及动画练习</h1>
+    <a id="imgLink" href="https://www.uts.edu.au/">
+        <img id="myImage" src="u1.png">
+    </a>
+    
+    </div>
+</body>
+
+</html>
